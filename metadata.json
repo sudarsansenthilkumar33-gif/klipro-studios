@@ -1,0 +1,6 @@
+{
+  "name": "KliPro - AI Short-Form Video Studio",
+  "description": "Automated 9:16 multi-format video editor with multilingual kinetic AI captions, smart B-roll, motion graphics, and UPI paywall.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

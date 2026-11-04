@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0c" />
+      <stop offset="100%" stop-color="#14151b" />
+    </linearGradient>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E676" />
+      <stop offset="100%" stop-color="#22c55e" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)" />
+
+  <!-- Outer Neon Border Accent -->
+  <rect x="16" y="16" width="480" height="480" rx="98" fill="none" stroke="#22c55e" stroke-width="3" stroke-opacity="0.3" />
+
+  <!-- Ambient Glow Behind K Emblem -->
+  <circle cx="256" cy="256" r="140" fill="#22c55e" opacity="0.15" filter="url(#glow)" />
+
+  <!-- Stylized Modern 'K' Emblem in Safe Zone (Centered inside 80% circle) -->
+  <g filter="url(#glow)">
+    <!-- Vertical Spine of K -->
+    <rect x="156" y="136" width="52" height="240" rx="16" fill="url(#neonGrad)" />
+    
+    <!-- Top Diagonal Arm of K -->
+    <path d="M 200 248 L 308 140 C 318 130 334 130 344 140 C 354 150 354 166 344 176 L 246 274 Z" fill="url(#neonGrad)" />
+
+    <!-- Bottom Diagonal Leg of K -->
+    <path d="M 230 258 L 338 366 C 348 376 348 392 338 402 C 328 412 312 412 302 402 L 194 294 Z" fill="url(#neonGrad)" />
+
+    <!-- Small energetic spark point in top-right corner of K -->
+    <circle cx="364" cy="148" r="10" fill="#00E676" />
+  </g>
+</svg>

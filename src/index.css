@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-dark: #060606;
+    --neon-green: #00e676;
+    --neon-green-glow: rgba(0, 230, 118, 0.45);
+    --card-surface: rgba(14, 14, 18, 0.8);
+    --border-glass: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background-color: #060606;
+    color: #f3f4f6;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+::-webkit-scrollbar-thumb {
+  background: #202024;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00e676;
+}
+
+/* Neon glow animations */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.25), inset 0 0 15px rgba(0, 230, 118, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.6), inset 0 0 25px rgba(0, 230, 118, 0.3);
+  }
+}
+
+@keyframes hookPopIn {
+  0% { transform: translateY(-30px) scale(0.85); opacity: 0; }
+  60% { transform: translateY(4px) scale(1.04); opacity: 1; }
+  100% { transform: translateY(0px) scale(1); opacity: 1; }
+}
+
+@keyframes lightLeakSweep {
+  0% { transform: translateX(-100%) rotate(25deg); opacity: 0; }
+  50% { opacity: 0.35; }
+  100% { transform: translateX(200%) rotate(25deg); opacity: 0; }
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(0px) scale(0.9); opacity: 0.3; }
+  50% { transform: translateY(-24px) scale(1.15); opacity: 0.85; }
+  100% { transform: translateY(0px) scale(0.9); opacity: 0.3; }
+}
+
+@keyframes beatPunch {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.animate-neon-pulse {
+  animation: neonPulse 3s infinite ease-in-out;
+}
+
+.animate-hook-pop {
+  animation: hookPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-light-leak {
+  animation: lightLeakSweep 6s infinite ease-in-out;
+}
+
+.glass-card {
+  background: rgba(14, 15, 18, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel {
+  background: rgba(9, 9, 12, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-text-glow {
+  text-shadow: 0 0 10px rgba(0, 230, 118, 0.7), 0 0 22px rgba(0, 230, 118, 0.4);
+}
+
+.neon-border-glow {
+  box-shadow: 0 0 25px rgba(0, 230, 118, 0.3);
+}
+
+.capcut-font {
+  font-family: 'Cabinet Grotesk', 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.02em;
+}
