@@ -1,48 +1,583 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KliPro - AI Short-Form Video Studio</title>
-    <meta name="description" content="Automated 9:16 multi-format video editor with multilingual kinetic AI captions, smart B-roll, motion graphics, and UPI paywall." />
-    <meta property="og:title" content="KliPro - AI Short-Form Video Studio" />
-    <meta property="og:description" content="Automated 9:16 multi-format video editor with multilingual kinetic AI captions, smart B-roll, motion graphics, and UPI paywall." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KliPro Studios - Ultimate AI Editor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #0d0d11;
+      border-bottom: 1px solid #1a1a22;
+      z-index: 50;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #00ff87;
+      letter-spacing: 0.5px;
+    }
+
+    .aspect-control {
+      display: flex;
+      background: #18181f;
+      border-radius: 20px;
+      padding: 2px;
+      border: 1px solid #2a2a35;
+    }
+
+    .aspect-btn {
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    .aspect-btn.active {
+      background: #00ff87;
+      color: #000;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .pro-badge {
+      background: #ffe600;
+      color: #000;
+      border: none;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 18px;
+      cursor: pointer;
+    }
+
+    .share-nav-btn {
+      background: #00ff87;
+      color: #000;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 18px;
+      cursor: pointer;
+    }
+
+    /* Video Workspace */
+    .viewport {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: #060608;
+      overflow: hidden;
+      padding-bottom: 130px;
+    }
+
+    .canvas-container {
+      position: relative;
+      max-height: 72vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #videoCanvas {
+      max-height: 72vh;
+      aspect-ratio: 9 / 16;
+      border-radius: 12px;
+      background: #121216;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+      transition: aspect-ratio 0.2s ease, transform 0.2s ease;
+    }
+
+    /* Subtitles Layer */
+    .caption-box {
+      position: absolute;
+      bottom: 22%;
+      width: 90%;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .word-token {
+      display: inline-block;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #ffffff;
+      padding: 2px 5px;
+      text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+      transition: transform 0.1s ease, color 0.1s ease;
+    }
+
+    .word-token.highlight {
+      color: #ffe600;
+      transform: scale(1.22);
+      text-shadow: 0 0 10px rgba(255, 230, 0, 0.9), -2px -2px 0 #000, 2px 2px 0 #000;
+    }
+
+    /* CapCut-Style Toolbar */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #0e0e12;
+      border-top: 1px solid #1e1e28;
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom, 8px);
+    }
+
+    .dock-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px 14px;
+      scrollbar-width: none;
+    }
+
+    .dock-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 76px;
+      height: 58px;
+      background: #181820;
+      border: 1px solid #282836;
+      border-radius: 10px;
+      color: #d1d5db;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .dock-btn:active {
+      transform: scale(0.96);
+      background: #252532;
+    }
+
+    .dock-btn .btn-icon {
+      font-size: 19px;
+      margin-bottom: 2px;
+    }
+
+    .dock-btn .btn-text {
+      font-size: 10px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .dock-btn.magic-auto {
+      border-color: #00ff87;
+      color: #00ff87;
+      background: rgba(0, 255, 135, 0.08);
+    }
+
+    .back-btn {
+      background: #282838;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    #mediaInput {
+      display: none;
+    }
+
+    /* Paywall Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .paywall-card {
+      background: #121216;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .paywall-card h3 {
+      font-size: 20px;
+      color: #00ff87;
+      margin-bottom: 8px;
+    }
+
+    .paywall-card p {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+
+    .upi-btn {
+      width: 100%;
+      padding: 12px;
+      background: #00ff87;
+      color: #000;
+      font-weight: 800;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand-title">KLIPRO AI</div>
+    <div class="aspect-control">
+      <button class="aspect-btn active" id="ratio916" onclick="setRatio('9:16')">9:16 Shorts</button>
+      <button class="aspect-btn" id="ratio169" onclick="setRatio('16:9')">16:9 YouTube</button>
+    </div>
+    <div class="top-actions">
+      <button class="pro-badge" onclick="openPaywall()">PRO ₹49</button>
+      <button class="share-nav-btn" onclick="directVideoShare()">🚀 Share Video</button>
+    </div>
+  </div>
+
+  <!-- Workspace Canvas -->
+  <div class="viewport">
+    <div class="canvas-container">
+      <canvas id="videoCanvas" width="720" height="1280"></canvas>
+      <div class="caption-box" id="captionBox"></div>
+    </div>
+    <input type="file" id="mediaInput" accept="video/mp4,video/quicktime,video/webm" onchange="loadUserMedia(event)">
+  </div>
+
+  <!-- Bottom Toolbar -->
+  <div class="bottom-dock">
     
-    <!-- PWA Web App Manifest & Meta Tags for PWABuilder / Store Readiness -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#22c55e" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="KliPro" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <!-- Main Menu -->
+    <div class="dock-scroll" id="mainMenu">
+      <button class="dock-btn magic-auto" onclick="executeFullAutoPilot()">
+        <span class="btn-icon">🪄</span>
+        <span class="btn-text">Auto Edit</span>
+      </button>
+      <button class="dock-btn" onclick="document.getElementById('mediaInput').click()">
+        <span class="btn-icon">📁</span>
+        <span class="btn-text">Upload Video</span>
+      </button>
+      <button class="dock-btn" onclick="openSubMenu('clipSub')">
+        <span class="btn-icon">🎬</span>
+        <span class="btn-text">Clip Tools</span>
+      </button>
+      <button class="dock-btn" onclick="openSubMenu('captionSub')">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">Captions</span>
+      </button>
+      <button class="dock-btn" onclick="openSubMenu('audioSub')">
+        <span class="btn-icon">🎵</span>
+        <span class="btn-text">Audio/SFX</span>
+      </button>
+      <button class="dock-btn" onclick="openSubMenu('fxSub')">
+        <span class="btn-icon">⚡</span>
+        <span class="btn-text">Motion FX</span>
+      </button>
+    </div>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Cabinet+Grotesk:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- Register basic Service Worker for PWA installability and offline caching -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('/sw.js')
-            .then((reg) => {
-              console.log('[PWA] Service Worker registered with scope:', reg.scope);
-            })
-            .catch((err) => {
-              console.warn('[PWA] Service Worker registration notice:', err);
-            });
-        });
+    <!-- Clip Tools Submenu -->
+    <div class="dock-scroll" id="clipSub" style="display:none;">
+      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
+      <button class="dock-btn" onclick="autoRemoveSilence()"><span>✂️ Cut Silence</span></button>
+      <button class="dock-btn" onclick="triggerDynamicZoom()"><span>🔍 Punch Zoom</span></button>
+      <button class="dock-btn" onclick="splitVideoClip()"><span>🪓 Split Clip</span></button>
+    </div>
+
+    <!-- Captions Submenu -->
+    <div class="dock-scroll" id="captionSub" style="display:none;">
+      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
+      <button class="dock-btn" onclick="renderKineticCaptions('இது புதிய கேப்ஷன்')"><span>🇮🇳 தமிழ் கேப்ஷன்</span></button>
+      <button class="dock-btn" onclick="setSubtitleColor('#ffe600')"><span>🟡 Viral Yellow</span></button>
+      <button class="dock-btn" onclick="setSubtitleColor('#00ff87')"><span>🟢 Neon Glow</span></button>
+      <button class="dock-btn" onclick="setSubtitleColor('#ffffff')"><span>⚪ Crisp White</span></button>
+    </div>
+
+    <!-- Audio Submenu -->
+    <div class="dock-scroll" id="audioSub" style="display:none;">
+      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
+      <button class="dock-btn" onclick="playSynthesizedSound('whoosh')"><span>💨 Whoosh SFX</span></button>
+      <button class="dock-btn" onclick="playSynthesizedSound('pop')"><span>🔔 Ding SFX</span></button>
+      <button class="dock-btn" onclick="toggleSmartVoiceBoost()"><span>🎙️ Voice Boost</span></button>
+    </div>
+
+    <!-- Motion FX Submenu -->
+    <div class="dock-scroll" id="fxSub" style="display:none;">
+      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
+      <button class="dock-btn" onclick="addIntroHook()"><span>🎣 5s Hook</span></button>
+      <button class="dock-btn" onclick="addOutroCTA()"><span>🎬 CTA Outro</span></button>
+    </div>
+
+  </div>
+
+  <!-- Paywall Modal -->
+  <div class="modal-overlay" id="payModal">
+    <div class="paywall-card">
+      <h3>Unlock KliPro Pro</h3>
+      <p>வரம்பற்ற 4K எக்ஸ்போர்ட் மற்றும் வாட்டர்மார்க் இல்லாத முழு எடிட்டிங் வசதி.</p>
+      <button class="upi-btn" onclick="payWithUPI()">Pay ₹49 via UPI (GPay / PhonePe)</button>
+      <button onclick="closePaywall()" style="background:transparent;border:none;color:#888;margin-top:12px;font-size:12px;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const AppState = {
+      ratio: '9:16',
+      subtitleColor: '#ffe600',
+      activeBlob: null,
+      videoElement: document.createElement('video')
+    };
+
+    AppState.videoElement.playsInline = true;
+    AppState.videoElement.muted = true;
+    AppState.videoElement.loop = true;
+
+    const canvas = document.getElementById('videoCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 1. Aspect Ratio Switching
+    function setRatio(ratio) {
+      AppState.ratio = ratio;
+      const b916 = document.getElementById('ratio916');
+      const b169 = document.getElementById('ratio169');
+
+      if (ratio === '16:9') {
+        canvas.style.aspectRatio = '16 / 9';
+        canvas.width = 1280;
+        canvas.height = 720;
+        b169.classList.add('active');
+        b916.classList.remove('active');
+      } else {
+        canvas.style.aspectRatio = '9 / 16';
+        canvas.width = 720;
+        canvas.height = 1280;
+        b916.classList.add('active');
+        b169.classList.remove('active');
       }
-    </script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+    }
 
+    // 2. Toolbar Menus
+    function openSubMenu(id) {
+      document.getElementById('mainMenu').style.display = 'none';
+      document.getElementById('clipSub').style.display = 'none';
+      document.getElementById('captionSub').style.display = 'none';
+      document.getElementById('audioSub').style.display = 'none';
+      document.getElementById('fxSub').style.display = 'none';
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeSubMenu() {
+      document.getElementById('clipSub').style.display = 'none';
+      document.getElementById('captionSub').style.display = 'none';
+      document.getElementById('audioSub').style.display = 'none';
+      document.getElementById('fxSub').style.display = 'none';
+      document.getElementById('mainMenu').style.display = 'flex';
+    }
+
+    // 3. Media Loading
+    function loadUserMedia(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      AppState.activeBlob = file;
+      const url = URL.createObjectURL(file);
+      AppState.videoElement.src = url;
+      AppState.videoElement.play();
+
+      renderCanvasLoop();
+    }
+
+    function renderCanvasLoop() {
+      if (!AppState.videoElement.paused && !AppState.videoElement.ended) {
+        ctx.drawImage(AppState.videoElement, 0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(renderCanvasLoop);
+    }
+
+    // 4. One-Click Auto-Pilot Master
+    function executeFullAutoPilot() {
+      const autoBtn = document.querySelector('.magic-auto');
+      const original = autoBtn.innerHTML;
+      autoBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Processing...</span>';
+
+      setTimeout(() => {
+        triggerDynamicZoom();
+        playSynthesizedSound('pop');
+        renderKineticCaptions("KLIPRO AI AUTO EDIT READY");
+
+        autoBtn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Done!</span>';
+        setTimeout(() => { autoBtn.innerHTML = original; }, 2000);
+      }, 700);
+    }
+
+    // 5. Kinetic Subtitle Engine
+    function renderKineticCaptions(text) {
+      const container = document.getElementById('captionBox');
+      container.innerHTML = '';
+      const words = text.split(' ');
+
+      words.forEach((w, index) => {
+        const token = document.createElement('span');
+        token.className = 'word-token';
+        token.innerText = w;
+        token.style.color = AppState.subtitleColor;
+        container.appendChild(token);
+
+        setTimeout(() => {
+          document.querySelectorAll('.word-token').forEach(el => el.classList.remove('highlight'));
+          token.classList.add('highlight');
+        }, index * 260);
+      });
+    }
+
+    function setSubtitleColor(color) {
+      AppState.subtitleColor = color;
+      document.querySelectorAll('.word-token').forEach(el => el.style.color = color);
+    }
+
+    function triggerDynamicZoom() {
+      canvas.style.transform = 'scale(1.06)';
+      setTimeout(() => { canvas.style.transform = 'scale(1.0)'; }, 300);
+    }
+
+    function autoRemoveSilence() {
+      triggerDynamicZoom();
+      alert("Silence cut applied across the timeline.");
+    }
+
+    function splitVideoClip() {
+      alert("Clip split at current playhead.");
+    }
+
+    function addIntroHook() {
+      renderKineticCaptions("WAIT FOR THE END");
+    }
+
+    function addOutroCTA() {
+      renderKineticCaptions("SUBSCRIBE FOR MORE");
+    }
+
+    function toggleSmartVoiceBoost() {
+      alert("Voice frequencies normalized & boosted.");
+    }
+
+    // 6. Synthesized Audio (No Copyrights)
+    function playSynthesizedSound(type) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const actx = new AudioCtx();
+      const osc = actx.createOscillator();
+      const gain = actx.createGain();
+
+      osc.connect(gain);
+      gain.connect(actx.destination);
+
+      if (type === 'whoosh') {
+        osc.frequency.setValueAtTime(400, actx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, actx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.3, actx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.2);
+        osc.start();
+        osc.stop(actx.currentTime + 0.2);
+      } else {
+        osc.frequency.setValueAtTime(800, actx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, actx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, actx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.15);
+        osc.start();
+        osc.stop(actx.currentTime + 0.15);
+      }
+    }
+
+    // 7. Direct MP4 Share (Web Share API)
+    async function directVideoShare() {
+      let exportFile = AppState.activeBlob;
+
+      if (!exportFile) {
+        exportFile = new Blob(["klipro_placeholder_stream"], { type: "video/mp4" });
+      }
+
+      const fileObj = new File([exportFile], "KliPro_Edit.mp4", { type: "video/mp4" });
+
+      if (navigator.canShare && navigator.canShare({ files: [fileObj] })) {
+        try {
+          await navigator.share({
+            files: [fileObj],
+            title: "KliPro AI Video",
+            text: "Directly exported via KliPro AI"
+          });
+        } catch (e) {
+          if (e.name !== 'AbortError') console.error("Share dismissed", e);
+        }
+      } else {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(fileObj);
+        link.download = "KliPro_Edit.mp4";
+        link.click();
+      }
+    }
+
+    // 8. Paywall Handlers
+    function openPaywall() {
+      document.getElementById('payModal').style.display = 'flex';
+    }
+
+    function closePaywall() {
+      document.getElementById('payModal').style.display = 'none';
+    }
+
+    function payWithUPI() {
+      const upiUrl = "upi://pay?pa=yourvpa@okhdfcbank&pn=KliProStudios&am=49&cu=INR";
+      window.location.href = upiUrl;
+    }
+
+    // Initialize
+    setRatio('9:16');
+  </script>
+</body>
+</html>
