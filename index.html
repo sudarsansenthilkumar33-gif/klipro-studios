@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KliPro Studios - Ultimate AI Editor</title>
+  <title>KliPro AI - Professional Studio</title>
   <style>
     * {
       box-sizing: border-box;
@@ -11,7 +11,7 @@
       padding: 0;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
@@ -23,561 +23,940 @@
       overflow: hidden;
     }
 
-    /* Top Bar */
-    .top-bar {
+    /* ================= SCREEN 1: DASHBOARD ================= */
+    #dashboardView {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 16px;
+      scrollbar-width: none;
+    }
+    #dashboardView::-webkit-scrollbar { display: none; }
+
+    .dash-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 14px;
-      background: #0d0d11;
-      border-bottom: 1px solid #1a1a22;
-      z-index: 50;
+      margin-bottom: 16px;
     }
 
-    .brand-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #00ff87;
-      letter-spacing: 0.5px;
+    .brand-logo {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #a855f7, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .aspect-control {
+    .circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #181822;
+      border: 1px solid #282836;
+      color: #fff;
       display: flex;
-      background: #18181f;
-      border-radius: 20px;
-      padding: 2px;
-      border: 1px solid #2a2a35;
-    }
-
-    .aspect-btn {
-      background: transparent;
-      border: none;
-      color: #888;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 16px;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
     }
 
-    .aspect-btn.active {
-      background: #00ff87;
-      color: #000;
+    /* Hero Action Box */
+    .hero-box {
+      background: linear-gradient(145deg, #1f182c, #0f0f16);
+      border: 1px solid #33264c;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
     }
 
-    .top-actions {
+    .hero-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .tag-container {
       display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .tag-chip {
+      background: #282038;
+      color: #d8b4fe;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      border: 1px solid #3f2f59;
+    }
+
+    .tag-chip.active {
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      font-weight: 700;
+    }
+
+    .btn-select-main {
+      width: 100%;
+      padding: 14px;
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
     }
 
-    .pro-badge {
-      background: #ffe600;
-      color: #000;
-      border: none;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 6px 10px;
-      border-radius: 18px;
+    .multi-clip-banner {
+      background: #14141c;
+      border: 1px solid #242432;
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
       cursor: pointer;
     }
 
-    .share-nav-btn {
-      background: #00ff87;
-      color: #000;
-      border: none;
-      font-size: 12px;
+    .drafts-title-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 15px;
       font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 18px;
+    }
+
+    .draft-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .draft-item {
+      aspect-ratio: 9 / 16;
+      background: #161622;
+      border-radius: 12px;
+      border: 1px solid #28283a;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      position: relative;
       cursor: pointer;
     }
 
-    /* Video Workspace */
-    .viewport {
+    .badge-draft {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0,0,0,0.6);
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* ================= SCREEN 2: STUDIO SETUP ================= */
+    #studioSetupView {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      padding: 16px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    #studioSetupView::-webkit-scrollbar { display: none; }
+
+    .setup-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.5px;
+      margin: 16px 0 8px;
+    }
+
+    .setup-card {
+      background: #14141c;
+      border: 1px solid #242432;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .switch-ui {
+      width: 44px;
+      height: 24px;
+      background: #334155;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .switch-ui.on {
+      background: #00f2fe;
+    }
+
+    .switch-ui::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .switch-ui.on::after {
+      transform: translateX(20px);
+    }
+
+    .topic-input {
+      width: 100%;
+      height: 80px;
+      background: #14141c;
+      border: 1px solid #242432;
+      border-radius: 14px;
+      color: #fff;
+      padding: 12px;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      background: linear-gradient(90deg, #8b5cf6, #00f2fe);
+      border: none;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* ================= SCREEN 3: EDITOR ================= */
+    #editorView {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      background: #000000;
+      position: relative;
+    }
+
+    .editor-top {
+      height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 14px;
+    }
+
+    .export-pill {
+      background: #00e5ff;
+      color: #000;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .preview-area {
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-      background: #060608;
-      overflow: hidden;
-      padding-bottom: 130px;
+      background: #08080c;
     }
 
-    .canvas-container {
+    .video-viewport-box {
+      height: 94%;
+      aspect-ratio: 9 / 16;
+      background: #161620;
+      border-radius: 6px;
       position: relative;
-      max-height: 72vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    #videoCanvas {
-      max-height: 72vh;
-      aspect-ratio: 9 / 16;
-      border-radius: 12px;
-      background: #121216;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
-      transition: aspect-ratio 0.2s ease, transform 0.2s ease;
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    /* Subtitles Layer */
+    .cross-v { position: absolute; width: 1px; height: 100%; top: 0; left: 50%; background: #00f2fe; opacity: 0.7; pointer-events: none; }
+    .cross-h { position: absolute; height: 1px; width: 100%; top: 50%; left: 0; background: #00f2fe; opacity: 0.7; pointer-events: none; }
+
     .caption-box {
       position: absolute;
-      bottom: 22%;
+      bottom: 20%;
       width: 90%;
       text-align: center;
       pointer-events: none;
     }
 
-    .word-token {
+    .cap-word {
       display: inline-block;
-      font-family: Impact, "Arial Black", sans-serif;
-      font-size: 24px;
-      text-transform: uppercase;
+      font-family: Impact, sans-serif;
+      font-size: 26px;
       color: #ffffff;
-      padding: 2px 5px;
+      padding: 2px 4px;
       text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-      transition: transform 0.1s ease, color 0.1s ease;
     }
 
-    .word-token.highlight {
+    .cap-word.active {
       color: #ffe600;
       transform: scale(1.22);
-      text-shadow: 0 0 10px rgba(255, 230, 0, 0.9), -2px -2px 0 #000, 2px 2px 0 #000;
+      text-shadow: 0 0 10px rgba(255,230,0,0.9), -2px -2px 0 #000, 2px 2px 0 #000;
     }
 
-    /* CapCut-Style Toolbar */
-    .bottom-dock {
-      position: fixed;
+    /* Timeline */
+    .timeline-engine {
+      height: 180px;
+      background: #09090d;
+      border-top: 1px solid #1a1a24;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .time-readout-bar {
+      height: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 11px;
+      color: #8e8ea0;
+    }
+
+    .playhead-needle {
+      position: absolute;
+      left: 50%;
+      top: 0;
       bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #0e0e12;
-      border-top: 1px solid #1e1e28;
-      z-index: 100;
+      width: 2px;
+      background: #ffffff;
+      z-index: 50;
+      pointer-events: none;
+      transform: translateX(-50%);
+    }
+
+    .track-scroller {
+      flex: 1;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 6px 50vw;
+      scrollbar-width: none;
+    }
+    .track-scroller::-webkit-scrollbar { display: none; }
+
+    .track-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .video-film-clip {
+      height: 52px;
+      background: #242432;
+      border-radius: 6px;
+      border: 2px solid #ffffff;
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      gap: 4px;
+      min-width: 260px;
+      cursor: pointer;
+    }
+
+    .frame-item {
+      width: 42px;
+      height: 44px;
+      background: #36364a;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #888;
+    }
+
+    .audio-film-clip {
+      height: 32px;
+      background: #0284c7;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .wave-line {
+      flex: 1;
+      height: 12px;
+      background: repeating-linear-gradient(90deg, #fff 0px, #fff 2px, transparent 3px, transparent 6px);
+      opacity: 0.8;
+    }
+
+    /* Bottom Dock */
+    .dock-bar {
+      background: #000000;
+      border-top: 1px solid #1a1a24;
       padding-bottom: env(safe-area-inset-bottom, 8px);
     }
 
-    .dock-scroll {
+    .dock-list {
       display: flex;
       overflow-x: auto;
-      gap: 10px;
-      padding: 10px 14px;
+      padding: 8px 10px;
+      gap: 6px;
       scrollbar-width: none;
     }
+    .dock-list::-webkit-scrollbar { display: none; }
 
-    .dock-scroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .dock-btn {
+    .tool-tab {
+      min-width: 62px;
+      height: 52px;
+      background: transparent;
+      border: none;
+      color: #9e9eb0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-width: 76px;
-      height: 58px;
-      background: #181820;
-      border: 1px solid #282836;
-      border-radius: 10px;
-      color: #d1d5db;
+      gap: 4px;
       cursor: pointer;
       flex-shrink: 0;
-      transition: all 0.15s ease;
     }
 
-    .dock-btn:active {
-      transform: scale(0.96);
-      background: #252532;
-    }
+    .tool-tab.active { color: #00e5ff; font-weight: 700; }
+    .tool-tab span { font-size: 10px; }
 
-    .dock-btn .btn-icon {
-      font-size: 19px;
-      margin-bottom: 2px;
-    }
-
-    .dock-btn .btn-text {
-      font-size: 10px;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .dock-btn.magic-auto {
-      border-color: #00ff87;
-      color: #00ff87;
-      background: rgba(0, 255, 135, 0.08);
-    }
-
-    .back-btn {
-      background: #282838;
-      color: #ffffff;
-      font-weight: bold;
-    }
-
-    #mediaInput {
-      display: none;
-    }
-
-    /* Paywall Modal */
+    /* ================= MODAL: PRICING ================= */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.85);
       z-index: 200;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .sheet-card {
+      width: 100%;
+      background: #111116;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 1px solid #282836;
       padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
-    .paywall-card {
-      background: #121216;
-      border: 1px solid #2a2a35;
+    .plan-card {
+      background: #181822;
+      border: 1px solid #2a2a3c;
       border-radius: 16px;
-      padding: 24px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .plan-card.selected {
+      border: 2px solid #8b5cf6;
+      background: #201a2e;
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #8b5cf6;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+
+    .btn-pay {
       width: 100%;
-      max-width: 360px;
-      text-align: center;
-    }
-
-    .paywall-card h3 {
-      font-size: 20px;
-      color: #00ff87;
-      margin-bottom: 8px;
-    }
-
-    .paywall-card p {
-      font-size: 13px;
-      color: #aaa;
-      margin-bottom: 16px;
-    }
-
-    .upi-btn {
-      width: 100%;
-      padding: 12px;
-      background: #00ff87;
-      color: #000;
-      font-weight: 800;
-      border-radius: 10px;
+      padding: 14px;
+      background: linear-gradient(90deg, #8b5cf6, #00f2fe);
       border: none;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
       margin-top: 10px;
     }
+
+    #fileInput { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="brand-title">KLIPRO AI</div>
-    <div class="aspect-control">
-      <button class="aspect-btn active" id="ratio916" onclick="setRatio('9:16')">9:16 Shorts</button>
-      <button class="aspect-btn" id="ratio169" onclick="setRatio('16:9')">16:9 YouTube</button>
+  <!-- ================= 1. DASHBOARD ================= -->
+  <section id="dashboardView">
+    <div class="dash-top">
+      <div class="brand-logo">✨ KliPro AI</div>
+      <button class="circle-btn" onclick="openPlansModal()">👑</button>
     </div>
-    <div class="top-actions">
-      <button class="pro-badge" onclick="openPaywall()">PRO ₹49</button>
-      <button class="share-nav-btn" onclick="directVideoShare()">🚀 Share Video</button>
+
+    <div class="hero-box">
+      <div class="hero-title">Auto Captions & B-Roll</div>
+      <div class="tag-container">
+        <span class="tag-chip active">Smart Captions</span>
+        <span class="tag-chip">Translate (140 languages)</span>
+        <span class="tag-chip">Motion Graphics</span>
+        <span class="tag-chip">Auto B-roll</span>
+      </div>
+      <button class="btn-select-main" onclick="document.getElementById('fileInput').click()">
+        <span>+</span> Select 1 video
+      </button>
+    </div>
+
+    <div class="multi-clip-banner" onclick="alert('Multi-clip reel creator ready.')">
+      <div>
+        <div style="font-weight:700; font-size:14px;">🎞️ Multi-Clip Reel</div>
+        <div style="font-size:11px; color:#8e8ea0;">Auto-cut multiple clips into one video</div>
+      </div>
+      <span style="font-size:12px; color:#94a3b8;">4+ clips ❯</span>
+    </div>
+
+    <div class="drafts-title-row">
+      <span>Your videos</span>
+      <span style="font-size:11px; color:#8e8ea0;">Tap to open</span>
+    </div>
+
+    <div class="draft-grid">
+      <div class="draft-item" onclick="openDirectEditor()">
+        <span class="badge-draft">DRAFT ⚡</span>
+        <span style="font-size:10px; color:#aaa;">9:16 • 0:37</span>
+      </div>
+      <div class="draft-item" onclick="openDirectEditor()">
+        <span class="badge-draft">DRAFT ⚡</span>
+        <span style="font-size:10px; color:#aaa;">16:9 • 0:21</span>
+      </div>
+      <div class="draft-item" onclick="openDirectEditor()">
+        <span class="badge-draft">DRAFT ⚡</span>
+        <span style="font-size:10px; color:#aaa;">9:16 • 0:15</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. STUDIO SETUP ================= -->
+  <section id="studioSetupView">
+    <div class="setup-top">
+      <button class="circle-btn" style="width:34px; height:34px;" onclick="closeSetup()">⬅️</button>
+      <span style="font-weight:700;">Studio setup</span>
+      <span style="font-size:12px; color:#8e8ea0;" id="videoDurPill">0:37</span>
+    </div>
+
+    <div class="section-label">LANGUAGE</div>
+    <div class="setup-card" onclick="toggleLanguageChoice()">
+      <div>
+        <div style="font-weight:600; font-size:14px;">Spoken in</div>
+        <div style="font-size:11px; color:#8e8ea0;">What is being said in the video</div>
+      </div>
+      <span style="color:#00f2fe; font-size:12px; font-weight:700;" id="langLabel">English 🇬🇧 ❯</span>
+    </div>
+
+    <div class="section-label">AI ENHANCEMENTS</div>
+    <div class="setup-card">
+      <div>
+        <div style="font-weight:600; font-size:14px;">Translate captions ✨</div>
+        <div style="font-size:11px; color:#8e8ea0;">Add captions in English or another language</div>
+      </div>
+      <div class="switch-ui on" onclick="this.classList.toggle('on')"></div>
+    </div>
+
+    <div class="setup-card">
+      <div>
+        <div style="font-weight:600; font-size:14px;">Smart B-Roll ✨</div>
+        <div style="font-size:11px; color:#8e8ea0;">Adds matching clips and motion graphics</div>
+      </div>
+      <div class="switch-ui on" onclick="this.classList.toggle('on')"></div>
+    </div>
+
+    <div class="section-label">VIDEO TOPIC (OPTIONAL)</div>
+    <textarea class="topic-input" placeholder="e.g. Travel vlog, crypto tutorial, workout..."></textarea>
+
+    <button class="btn-generate" onclick="startFastAutoEdit()">✨ Generate Video</button>
+  </section>
+
+  <!-- ================= 3. EDITOR ================= -->
+  <section id="editorView">
+    <div class="editor-top">
+      <button class="circle-btn" style="width:34px; height:34px; font-size:14px;" onclick="closeEditor()">✕</button>
+      <div style="font-size:12px; font-weight:700; background:#181822; padding:4px 10px; border-radius:6px;">AI UHD ▾</div>
+      <button class="export-pill" onclick="directExportShare()">Export</button>
+    </div>
+
+    <div class="preview-area">
+      <div class="video-viewport-box" id="viewportBox">
+        <canvas id="renderCanvas" width="720" height="1280"></canvas>
+        <div class="cross-v"></div>
+        <div class="cross-h"></div>
+        <div class="caption-box" id="captionLayer"></div>
+      </div>
+    </div>
+
+    <div class="timeline-engine">
+      <div class="playhead-needle"></div>
+      
+      <div class="time-readout-bar">
+        <span id="timecode">0:00 00 / 0:37 00</span>
+        <div style="display:flex; gap:16px;">
+          <span style="cursor:pointer;" onclick="togglePlayback()">▶</span>
+          <span style="cursor:pointer;" onclick="punchZoom()">🔍</span>
+          <span style="cursor:pointer;" onclick="alert('Undo')">↶</span>
+          <span style="cursor:pointer;" onclick="alert('Redo')">↷</span>
+        </div>
+      </div>
+
+      <div class="track-scroller">
+        <div class="track-stack">
+          <div class="video-film-clip" onclick="openDockMenu('clipDock')">
+            <div class="frame-item">🎞️</div>
+            <div class="frame-item">🎞️</div>
+            <div class="frame-item">🎞️</div>
+            <div class="frame-item">🎞️</div>
+            <div class="frame-item">🎞️</div>
+          </div>
+          <div class="audio-film-clip" onclick="openDockMenu('audioDock')">
+            <span>🎙️ Voiceover 1</span>
+            <div class="wave-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="dock-bar">
+      <div class="dock-list" id="mainDock">
+        <button class="tool-tab active" onclick="startFastAutoEdit()">
+          <span>🪄</span>
+          <span>AutoCut</span>
+        </button>
+        <button class="tool-tab" onclick="openDockMenu('clipDock')">
+          <span>✂️</span>
+          <span>Edit</span>
+        </button>
+        <button class="tool-tab" onclick="openDockMenu('audioDock')">
+          <span>🎵</span>
+          <span>Audio</span>
+        </button>
+        <button class="tool-tab" onclick="generateCaptions('en')">
+          <span>🇬🇧</span>
+          <span>English AI</span>
+        </button>
+        <button class="tool-tab" onclick="generateCaptions('ta')">
+          <span>🇮🇳</span>
+          <span>Tamil AI</span>
+        </button>
+        <button class="tool-tab" onclick="toggleRatio()">
+          <span>📱</span>
+          <span>Ratio</span>
+        </button>
+      </div>
+
+      <div class="dock-list" id="clipDock" style="display:none;">
+        <button class="tool-tab" onclick="openDockMenu('mainDock')">
+          <span>⬅️</span>
+          <span>Back</span>
+        </button>
+        <button class="tool-tab" onclick="punchZoom(); playSFX('whoosh'); alert('Silence Removed');">
+          <span>✂️</span>
+          <span>Silence</span>
+        </button>
+        <button class="tool-tab" onclick="punchZoom()">
+          <span>🔍</span>
+          <span>Zoom</span>
+        </button>
+        <button class="tool-tab" onclick="playSFX('ding'); alert('Split Applied');">
+          <span>🪓</span>
+          <span>Split</span>
+        </button>
+        <button class="tool-tab" onclick="alert('Clip Duplicated')">
+          <span>📋</span>
+          <span>Duplicate</span>
+        </button>
+      </div>
+
+      <div class="dock-list" id="audioDock" style="display:none;">
+        <button class="tool-tab" onclick="openDockMenu('mainDock')">
+          <span>⬅️</span>
+          <span>Back</span>
+        </button>
+        <button class="tool-tab" onclick="playSFX('whoosh')">
+          <span>💨</span>
+          <span>Whoosh</span>
+        </button>
+        <button class="tool-tab" onclick="playSFX('ding')">
+          <span>🔔</span>
+          <span>Ding</span>
+        </button>
+        <button class="tool-tab" onclick="alert('Noise Reduced')">
+          <span>🎙️</span>
+          <span>Denoise</span>
+        </button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ================= 4. PRICING MODAL ================= -->
+  <div class="modal-overlay" id="plansModal" onclick="closePlansModal(event)">
+    <div class="sheet-card" onclick="event.stopPropagation()">
+      <div style="font-weight:800; font-size:18px; margin-bottom:4px;">KliPro Premium Plans</div>
+      <div style="font-size:12px; color:#8e8ea0; margin-bottom:16px;">Cancel anytime. Direct UPI Activation.</div>
+
+      <div class="plan-card" onclick="selectPlan(this, 29, 'Weekly')">
+        <div style="display:flex; justify-content:space-between; font-weight:700;">
+          <span>Weekly Pass</span>
+          <span style="color:#00f2fe;">₹29 / week</span>
+        </div>
+        <div style="font-size:11px; color:#8e8ea0; margin-top:4px;">20 min AI video • Quick projects</div>
+      </div>
+
+      <div class="plan-card selected" onclick="selectPlan(this, 79, 'Monthly')">
+        <span class="plan-badge">POPULAR</span>
+        <div style="display:flex; justify-content:space-between; font-weight:700;">
+          <span>Pro Monthly</span>
+          <span style="color:#00f2fe;">₹79 / month</span>
+        </div>
+        <div style="font-size:11px; color:#8e8ea0; margin-top:4px;">120 min AI video • No Watermark • 4K Export</div>
+      </div>
+
+      <div class="plan-card" onclick="selectPlan(this, 499, 'Yearly')">
+        <span class="plan-badge" style="background:#00e5ff; color:#000;">SAVE 50%</span>
+        <div style="display:flex; justify-content:space-between; font-weight:700;">
+          <span>Annual Unlimited</span>
+          <span style="color:#00f2fe;">₹499 / year</span>
+        </div>
+        <div style="font-size:11px; color:#8e8ea0; margin-top:4px;">Unlimited video minutes • VIP Fast Render</div>
+      </div>
+
+      <button class="btn-pay" id="payButton" onclick="triggerUPIPayment()">Continue with Pro (₹79)</button>
     </div>
   </div>
 
-  <!-- Workspace Canvas -->
-  <div class="viewport">
-    <div class="canvas-container">
-      <canvas id="videoCanvas" width="720" height="1280"></canvas>
-      <div class="caption-box" id="captionBox"></div>
-    </div>
-    <input type="file" id="mediaInput" accept="video/mp4,video/quicktime,video/webm" onchange="loadUserMedia(event)">
-  </div>
-
-  <!-- Bottom Toolbar -->
-  <div class="bottom-dock">
-    
-    <!-- Main Menu -->
-    <div class="dock-scroll" id="mainMenu">
-      <button class="dock-btn magic-auto" onclick="executeFullAutoPilot()">
-        <span class="btn-icon">🪄</span>
-        <span class="btn-text">Auto Edit</span>
-      </button>
-      <button class="dock-btn" onclick="document.getElementById('mediaInput').click()">
-        <span class="btn-icon">📁</span>
-        <span class="btn-text">Upload Video</span>
-      </button>
-      <button class="dock-btn" onclick="openSubMenu('clipSub')">
-        <span class="btn-icon">🎬</span>
-        <span class="btn-text">Clip Tools</span>
-      </button>
-      <button class="dock-btn" onclick="openSubMenu('captionSub')">
-        <span class="btn-icon">💬</span>
-        <span class="btn-text">Captions</span>
-      </button>
-      <button class="dock-btn" onclick="openSubMenu('audioSub')">
-        <span class="btn-icon">🎵</span>
-        <span class="btn-text">Audio/SFX</span>
-      </button>
-      <button class="dock-btn" onclick="openSubMenu('fxSub')">
-        <span class="btn-icon">⚡</span>
-        <span class="btn-text">Motion FX</span>
-      </button>
-    </div>
-
-    <!-- Clip Tools Submenu -->
-    <div class="dock-scroll" id="clipSub" style="display:none;">
-      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
-      <button class="dock-btn" onclick="autoRemoveSilence()"><span>✂️ Cut Silence</span></button>
-      <button class="dock-btn" onclick="triggerDynamicZoom()"><span>🔍 Punch Zoom</span></button>
-      <button class="dock-btn" onclick="splitVideoClip()"><span>🪓 Split Clip</span></button>
-    </div>
-
-    <!-- Captions Submenu -->
-    <div class="dock-scroll" id="captionSub" style="display:none;">
-      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
-      <button class="dock-btn" onclick="renderKineticCaptions('இது புதிய கேப்ஷன்')"><span>🇮🇳 தமிழ் கேப்ஷன்</span></button>
-      <button class="dock-btn" onclick="setSubtitleColor('#ffe600')"><span>🟡 Viral Yellow</span></button>
-      <button class="dock-btn" onclick="setSubtitleColor('#00ff87')"><span>🟢 Neon Glow</span></button>
-      <button class="dock-btn" onclick="setSubtitleColor('#ffffff')"><span>⚪ Crisp White</span></button>
-    </div>
-
-    <!-- Audio Submenu -->
-    <div class="dock-scroll" id="audioSub" style="display:none;">
-      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
-      <button class="dock-btn" onclick="playSynthesizedSound('whoosh')"><span>💨 Whoosh SFX</span></button>
-      <button class="dock-btn" onclick="playSynthesizedSound('pop')"><span>🔔 Ding SFX</span></button>
-      <button class="dock-btn" onclick="toggleSmartVoiceBoost()"><span>🎙️ Voice Boost</span></button>
-    </div>
-
-    <!-- Motion FX Submenu -->
-    <div class="dock-scroll" id="fxSub" style="display:none;">
-      <button class="dock-btn back-btn" onclick="closeSubMenu()"><span>⬅️ Back</span></button>
-      <button class="dock-btn" onclick="addIntroHook()"><span>🎣 5s Hook</span></button>
-      <button class="dock-btn" onclick="addOutroCTA()"><span>🎬 CTA Outro</span></button>
-    </div>
-
-  </div>
-
-  <!-- Paywall Modal -->
-  <div class="modal-overlay" id="payModal">
-    <div class="paywall-card">
-      <h3>Unlock KliPro Pro</h3>
-      <p>வரம்பற்ற 4K எக்ஸ்போர்ட் மற்றும் வாட்டர்மார்க் இல்லாத முழு எடிட்டிங் வசதி.</p>
-      <button class="upi-btn" onclick="payWithUPI()">Pay ₹49 via UPI (GPay / PhonePe)</button>
-      <button onclick="closePaywall()" style="background:transparent;border:none;color:#888;margin-top:12px;font-size:12px;cursor:pointer;">Cancel</button>
-    </div>
-  </div>
+  <input type="file" id="fileInput" accept="video/*" onchange="handleSelectedMedia(event)">
 
   <script>
-    const AppState = {
+    const Engine = {
+      video: document.createElement('video'),
+      canvas: document.getElementById('renderCanvas'),
+      ctx: document.getElementById('renderCanvas').getContext('2d'),
+      activeFile: null,
       ratio: '9:16',
-      subtitleColor: '#ffe600',
-      activeBlob: null,
-      videoElement: document.createElement('video')
+      selectedPrice: 79,
+      currentLanguage: 'en'
     };
 
-    AppState.videoElement.playsInline = true;
-    AppState.videoElement.muted = true;
-    AppState.videoElement.loop = true;
+    Engine.video.playsInline = true;
+    Engine.video.muted = true;
+    Engine.video.loop = true;
 
-    const canvas = document.getElementById('videoCanvas');
-    const ctx = canvas.getContext('2d');
+    function handleSelectedMedia(e) {
+      const file = e.target.files[0];
+      if (!file) return;
 
-    // 1. Aspect Ratio Switching
-    function setRatio(ratio) {
-      AppState.ratio = ratio;
-      const b916 = document.getElementById('ratio916');
-      const b169 = document.getElementById('ratio169');
+      Engine.activeFile = file;
+      Engine.video.src = URL.createObjectURL(file);
 
-      if (ratio === '16:9') {
-        canvas.style.aspectRatio = '16 / 9';
-        canvas.width = 1280;
-        canvas.height = 720;
-        b169.classList.add('active');
-        b916.classList.remove('active');
-      } else {
-        canvas.style.aspectRatio = '9 / 16';
-        canvas.width = 720;
-        canvas.height = 1280;
-        b916.classList.add('active');
-        b169.classList.remove('active');
-      }
+      document.getElementById('dashboardView').style.display = 'none';
+      document.getElementById('studioSetupView').style.display = 'flex';
     }
 
-    // 2. Toolbar Menus
-    function openSubMenu(id) {
-      document.getElementById('mainMenu').style.display = 'none';
-      document.getElementById('clipSub').style.display = 'none';
-      document.getElementById('captionSub').style.display = 'none';
-      document.getElementById('audioSub').style.display = 'none';
-      document.getElementById('fxSub').style.display = 'none';
+    function toggleLanguageChoice() {
+      Engine.currentLanguage = Engine.currentLanguage === 'en' ? 'ta' : 'en';
+      document.getElementById('langLabel').innerText = Engine.currentLanguage === 'en' ? 'English 🇬🇧 ❯' : 'Tamil 🇮🇳 ❯';
+    }
+
+    function closeSetup() {
+      document.getElementById('studioSetupView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'flex';
+    }
+
+    function startFastAutoEdit() {
+      document.getElementById('studioSetupView').style.display = 'none';
+      document.getElementById('editorView').style.display = 'flex';
+
+      Engine.video.play();
+      startCanvasLoop();
+      generateCaptions(Engine.currentLanguage);
+      punchZoom();
+      playSFX('whoosh');
+    }
+
+    function openDirectEditor() {
+      document.getElementById('dashboardView').style.display = 'none';
+      document.getElementById('editorView').style.display = 'flex';
+      generateCaptions('en');
+    }
+
+    function closeEditor() {
+      Engine.video.pause();
+      document.getElementById('editorView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'flex';
+    }
+
+    function startCanvasLoop() {
+      if (!Engine.video.paused && !Engine.video.ended) {
+        Engine.ctx.drawImage(Engine.video, 0, 0, Engine.canvas.width, Engine.canvas.height);
+      }
+      requestAnimationFrame(startCanvasLoop);
+    }
+
+    function openDockMenu(id) {
+      document.getElementById('mainDock').style.display = 'none';
+      document.getElementById('clipDock').style.display = 'none';
+      document.getElementById('audioDock').style.display = 'none';
       document.getElementById(id).style.display = 'flex';
     }
 
-    function closeSubMenu() {
-      document.getElementById('clipSub').style.display = 'none';
-      document.getElementById('captionSub').style.display = 'none';
-      document.getElementById('audioSub').style.display = 'none';
-      document.getElementById('fxSub').style.display = 'none';
-      document.getElementById('mainMenu').style.display = 'flex';
-    }
+    function generateCaptions(lang) {
+      const box = document.getElementById('captionLayer');
+      box.innerHTML = '';
+      const list = lang === 'ta' 
+        ? ["வணக்கம்", "இது", "KLIPRO", "AI", "எடிட்டர்"] 
+        : ["WELCOME", "TO", "KLIPRO", "AI", "STUDIO"];
 
-    // 3. Media Loading
-    function loadUserMedia(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      AppState.activeBlob = file;
-      const url = URL.createObjectURL(file);
-      AppState.videoElement.src = url;
-      AppState.videoElement.play();
-
-      renderCanvasLoop();
-    }
-
-    function renderCanvasLoop() {
-      if (!AppState.videoElement.paused && !AppState.videoElement.ended) {
-        ctx.drawImage(AppState.videoElement, 0, 0, canvas.width, canvas.height);
-      }
-      requestAnimationFrame(renderCanvasLoop);
-    }
-
-    // 4. One-Click Auto-Pilot Master
-    function executeFullAutoPilot() {
-      const autoBtn = document.querySelector('.magic-auto');
-      const original = autoBtn.innerHTML;
-      autoBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Processing...</span>';
-
-      setTimeout(() => {
-        triggerDynamicZoom();
-        playSynthesizedSound('pop');
-        renderKineticCaptions("KLIPRO AI AUTO EDIT READY");
-
-        autoBtn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Done!</span>';
-        setTimeout(() => { autoBtn.innerHTML = original; }, 2000);
-      }, 700);
-    }
-
-    // 5. Kinetic Subtitle Engine
-    function renderKineticCaptions(text) {
-      const container = document.getElementById('captionBox');
-      container.innerHTML = '';
-      const words = text.split(' ');
-
-      words.forEach((w, index) => {
-        const token = document.createElement('span');
-        token.className = 'word-token';
-        token.innerText = w;
-        token.style.color = AppState.subtitleColor;
-        container.appendChild(token);
+      list.forEach((w, i) => {
+        const span = document.createElement('span');
+        span.className = 'cap-word';
+        span.innerText = w;
+        box.appendChild(span);
 
         setTimeout(() => {
-          document.querySelectorAll('.word-token').forEach(el => el.classList.remove('highlight'));
-          token.classList.add('highlight');
-        }, index * 260);
+          document.querySelectorAll('.cap-word').forEach(el => el.classList.remove('active'));
+          span.classList.add('active');
+        }, i * 260);
       });
     }
 
-    function setSubtitleColor(color) {
-      AppState.subtitleColor = color;
-      document.querySelectorAll('.word-token').forEach(el => el.style.color = color);
+    function punchZoom() {
+      Engine.canvas.style.transform = 'scale(1.08)';
+      setTimeout(() => { Engine.canvas.style.transform = 'scale(1.0)'; }, 280);
     }
 
-    function triggerDynamicZoom() {
-      canvas.style.transform = 'scale(1.06)';
-      setTimeout(() => { canvas.style.transform = 'scale(1.0)'; }, 300);
-    }
-
-    function autoRemoveSilence() {
-      triggerDynamicZoom();
-      alert("Silence cut applied across the timeline.");
-    }
-
-    function splitVideoClip() {
-      alert("Clip split at current playhead.");
-    }
-
-    function addIntroHook() {
-      renderKineticCaptions("WAIT FOR THE END");
-    }
-
-    function addOutroCTA() {
-      renderKineticCaptions("SUBSCRIBE FOR MORE");
-    }
-
-    function toggleSmartVoiceBoost() {
-      alert("Voice frequencies normalized & boosted.");
-    }
-
-    // 6. Synthesized Audio (No Copyrights)
-    function playSynthesizedSound(type) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      const actx = new AudioCtx();
+    function playSFX(type) {
+      const actx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = actx.createOscillator();
       const gain = actx.createGain();
-
       osc.connect(gain);
       gain.connect(actx.destination);
 
       if (type === 'whoosh') {
-        osc.frequency.setValueAtTime(400, actx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(80, actx.currentTime + 0.2);
+        osc.frequency.setValueAtTime(450, actx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(70, actx.currentTime + 0.18);
         gain.gain.setValueAtTime(0.3, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.2);
+        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.18);
         osc.start();
-        osc.stop(actx.currentTime + 0.2);
+        osc.stop(actx.currentTime + 0.18);
       } else {
-        osc.frequency.setValueAtTime(800, actx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, actx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(850, actx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1300, actx.currentTime + 0.14);
         gain.gain.setValueAtTime(0.3, actx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.15);
+        gain.gain.linearRampToValueAtTime(0.01, actx.currentTime + 0.14);
         osc.start();
-        osc.stop(actx.currentTime + 0.15);
+        osc.stop(actx.currentTime + 0.14);
       }
     }
 
-    // 7. Direct MP4 Share (Web Share API)
-    async function directVideoShare() {
-      let exportFile = AppState.activeBlob;
-
-      if (!exportFile) {
-        exportFile = new Blob(["klipro_placeholder_stream"], { type: "video/mp4" });
+    function toggleRatio() {
+      const box = document.getElementById('viewportBox');
+      if (Engine.ratio === '9:16') {
+        Engine.ratio = '16:9';
+        box.style.aspectRatio = '16 / 9';
+        Engine.canvas.width = 1280;
+        Engine.canvas.height = 720;
+      } else {
+        Engine.ratio = '9:16';
+        box.style.aspectRatio = '9 / 16';
+        Engine.canvas.width = 720;
+        Engine.canvas.height = 1280;
       }
+    }
 
-      const fileObj = new File([exportFile], "KliPro_Edit.mp4", { type: "video/mp4" });
+    async function directExportShare() {
+      let file = Engine.activeFile || new Blob(["sample_video"], { type: "video/mp4" });
+      const mp4 = new File([file], "KliPro_Edit.mp4", { type: "video/mp4" });
 
-      if (navigator.canShare && navigator.canShare({ files: [fileObj] })) {
+      if (navigator.canShare && navigator.canShare({ files: [mp4] })) {
         try {
-          await navigator.share({
-            files: [fileObj],
-            title: "KliPro AI Video",
-            text: "Directly exported via KliPro AI"
-          });
-        } catch (e) {
-          if (e.name !== 'AbortError') console.error("Share dismissed", e);
-        }
+          await navigator.share({ files: [mp4], title: "KliPro AI Video" });
+        } catch (e) {}
       } else {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(fileObj);
-        link.download = "KliPro_Edit.mp4";
-        link.click();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(mp4);
+        a.download = "KliPro_Edit.mp4";
+        a.click();
       }
     }
 
-    // 8. Paywall Handlers
-    function openPaywall() {
-      document.getElementById('payModal').style.display = 'flex';
+    function openPlansModal() {
+      document.getElementById('plansModal').style.display = 'flex';
     }
 
-    function closePaywall() {
-      document.getElementById('payModal').style.display = 'none';
+    function closePlansModal(e) {
+      document.getElementById('plansModal').style.display = 'none';
     }
 
-    function payWithUPI() {
-      const upiUrl = "upi://pay?pa=yourvpa@okhdfcbank&pn=KliProStudios&am=49&cu=INR";
-      window.location.href = upiUrl;
+    function selectPlan(card, price, name) {
+      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      Engine.selectedPrice = price;
+      document.getElementById('payButton').innerText = `Continue with ${name} (₹${price})`;
     }
 
-    // Initialize
-    setRatio('9:16');
+    function triggerUPIPayment() {
+      window.location.href = `upi://pay?pa=yourvpa@okhdfcbank&pn=KliProStudios&am=${Engine.selectedPrice}&cu=INR`;
+    }
+
+    function togglePlayback() {
+      if (Engine.video.paused) Engine.video.play();
+      else Engine.video.pause();
+    }
   </script>
 </body>
 </html>
